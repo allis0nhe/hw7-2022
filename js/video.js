@@ -1,87 +1,84 @@
-let video;
+var video;
 
 window.addEventListener("load", function() {
-  console.log("Good job opening the window");
-  video = document.querySelector("video");
-  video.autoplay = false;
-  video.loop = false; 
-  console.log("Autoplay is set to " + video.autoplay);
-  console.log("Loop is set to " + video.loop);
+	console.log("Good job opening the window")
+	video = document.querySelector(".video");
+	video.autoplay = false;
+	video.loop = false; 
 });
 
-// Event listeners for status display
-const status = document.getElementById("status");
+const volume = document.querySelector("#slider");
+const volumeInfo = document.getElementById("volume");
+
+function updateVolume() {
+  video.volume = volumePercent;
+  const volumePercent = volume.value / 100;
+  console.log("The current value is " + volumePercent);
+  volumeInfo.innerHTML = volume.value + "%";
+}
+
+volume.addEventListener("change", updateVolume);
+
 
 document.querySelector("#play").addEventListener("click", function() {
-  console.log("Play Video");
-  video.play();
-  updateVolume();
-  status.innerHTML = "Playing";
+	console.log("Play Video");
+	video.play(); 
+	document.getElementById("volume").innerHTML = video.volume * 100 + "%";
 });
 
 document.querySelector("#pause").addEventListener("click", function() {
-  console.log("Pause Video");
-  video.pause();
-  status.innerHTML = "Paused";
-});
+	console.log("Pause Video");
+	video.pause();
+}); 
 
-document.querySelector("#mute").addEventListener("click", function() {
-  if (video.muted) {
-    console.log("Unmute Video");
-    video.muted = false;
-    this.innerHTML = "Mute";
-  } else {
-    console.log("Mute Video");
-    video.muted = true;
-    this.innerHTML = "Unmute";
-  }
-});
-
-// Video speed controls
 document.querySelector("#slower").addEventListener("click", function() {
-  console.log("Slow down Video");
-  video.playbackRate *= 0.9;
-  console.log("Video speed: " + video.playbackRate);
+	console.log("Slow down video");
+	video.playbackRate *= 0.9;
+	console.log("Speed is " + video.playbackRate); 
 });
 
 document.querySelector("#faster").addEventListener("click", function() {
-  console.log("Speed up Video");
-  video.playbackRate /= 0.9; 
-  console.log("Video speed: " + video.playbackRate);
+	console.log("Speed up video"); 
+	video.playbackRate += 0.1; 
+	console.log("Speed is " + video.playbackRate); 
 });
 
-// Video skip controls
 document.querySelector("#skip").addEventListener("click", function() {
-  console.log("Skip ahead Video");
-  video.currentTime += 10;
-  if (video.currentTime >= video.duration) {
-    video.currentTime = 0;
-  }
-  console.log("Current time: " + video.currentTime);
+    console.log("Skip ahead Video");
+    video.currentTime += 10;
+    if (video.currentTime >= video.duration) {
+        video.currentTime = 0;
+    }
+    console.log("Current time: " + video.currentTime);
 });
 
-// Volume controls
-const volumeSlider = document.querySelector("#slider");
-const volumeDisplay = document.querySelector("#volume");
 
-function updateVolume() {
-  volumeDisplay.innerHTML = Math.round(video.volume * 100) + "%";
-  volumeSlider.value = Math.round(video.volume * 100);
-  console.log("The current value is " + video.volume);
-}
-
-volumeSlider.addEventListener("input", function() {
-  video.volume = this.value / 100;
-  updateVolume();
+document.querySelector("#mute").addEventListener("click", function() {
+	if (video.muted) {
+    video.muted = false;
+		console.log("Video Unmute");  
+    console.log("Video Unmuted");
+		document.querySelector("#mute").innerHTML = "Mute";
+	}
+	else {
+    video.muted = true; 
+		console.log("Video Muted");
+		document.querySelector("#mute").innerHTML = "Unmute";
+	}
 });
 
-// Video effects controls
+document.querySelector("#slider").addEventListener("change", function() {
+	video.volume = this.value / 100; 
+	updateVolume(); 
+	console.log("The current value is " + video.volume); 
+});
+
 document.querySelector("#vintage").addEventListener("click", function() {
-  console.log("Apply Vintage effect");
-  video.classList.add("oldSchool");
+	video.classList.add("oldSchool"); 
+  console.log("Vintage");
 });
 
 document.querySelector("#orig").addEventListener("click", function() {
-  console.log("Remove Vintage effect");
-  video.classList.remove("oldSchool");
+	video.classList.remove("oldSchool"); 
+  console.log("Original");
 });
