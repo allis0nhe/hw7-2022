@@ -1,23 +1,21 @@
-// Video player script
-
-const player = document.querySelector("#player");
 let video;
 
-// Initialize video
 window.addEventListener("load", function() {
-  console.log("Video player loaded.");
-  video = player.querySelector("video");
+  console.log("Good job opening the window");
+  video = document.querySelector("video");
   video.autoplay = false;
-  video.loop = false;
+  video.loop = false; 
   console.log("Autoplay is set to " + video.autoplay);
   console.log("Loop is set to " + video.loop);
 });
 
 // Event listeners for status display
 const status = document.getElementById("status");
+
 document.querySelector("#play").addEventListener("click", function() {
   console.log("Play Video");
   video.play();
+  updateVolume();
   status.innerHTML = "Playing";
 });
 
@@ -28,7 +26,7 @@ document.querySelector("#pause").addEventListener("click", function() {
 });
 
 document.querySelector("#mute").addEventListener("click", function() {
-  if(video.muted) {
+  if (video.muted) {
     console.log("Unmute Video");
     video.muted = false;
     this.innerHTML = "Mute";
@@ -56,32 +54,34 @@ document.querySelector("#faster").addEventListener("click", function() {
 document.querySelector("#skip").addEventListener("click", function() {
   console.log("Skip ahead Video");
   video.currentTime += 10;
-  if(video.currentTime >= video.duration) {
+  if (video.currentTime >= video.duration) {
     video.currentTime = 0;
   }
   console.log("Current time: " + video.currentTime);
 });
 
 // Volume controls
-const volumeSlider = document.querySelector("#volume-slider");
-const volumeDisplay = document.getElementById("volume-display");
+const volumeSlider = document.querySelector("#slider");
+const volumeDisplay = document.querySelector("#volume");
 
 function updateVolume() {
-  const volumeFraction = volumeSlider.value / 100;
-  video.volume = volumeFraction;
-  console.log("The current volume is " + volumeFraction);
-  volumeDisplay.innerHTML = volumeSlider.value + "%";
+  volumeDisplay.innerHTML = Math.round(video.volume * 100) + "%";
+  volumeSlider.value = Math.round(video.volume * 100);
+  console.log("The current value is " + video.volume);
 }
 
-volumeSlider.addEventListener("change", updateVolume);
+volumeSlider.addEventListener("input", function() {
+  video.volume = this.value / 100;
+  updateVolume();
+});
 
 // Video effects controls
 document.querySelector("#vintage").addEventListener("click", function() {
   console.log("Apply Vintage effect");
-  video.classList.add("vintage");
+  video.classList.add("oldSchool");
 });
 
 document.querySelector("#orig").addEventListener("click", function() {
   console.log("Remove Vintage effect");
-  video.classList.remove("vintage");
+  video.classList.remove("oldSchool");
 });
